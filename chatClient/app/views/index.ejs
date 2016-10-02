@@ -1,14 +1,18 @@
 <!-- index.ejs -->    
 <!DOCTYPE html>
-<html lang="en" ng-app="chatclient">
+<html lang="en" ng-app="chatClient">
 	<head>
-	    <title>scotch-chat</title>
+		<meta charset="utf-8">
+	    <title>KeepworksChat</title>
 	    <link rel="stylesheet" href="css/app.css">
 	    <link rel="stylesheet" href="libs/animate.css/animate.css">
 	    <link rel="stylesheet" href="libs/angular-material/angular-material.css">
 
+
 	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script> -->
-	    <script src="libs/angular/angular.js"></script>
+
+	    <script type="text/javascript" src="libs/requirejs/require.js"></script>
+	    <script type="text/javascript" src="libs/angular/angular.js"></script>
 	    <script src="http://localhost:8085/socket.io/socket.io.js"></script>
 	    <script type="text/javascript" src="libs/angular-animate/angular-animate.js"></script>
 	    <script type="text/javascript" src="libs/angular-aria/angular-aria.js"></script>
@@ -23,7 +27,7 @@
 	    <md-content>
 	        <section>
 	            <md-list>
-	                <md-subheader class="md-primary header">Room: {{room}} {{2+3}}<span align="right">Userame: {{username}} </span> </md-subheader>
+	                <md-subheader class="md-primary header">Room: {{room}}<span align="right">Userame: {{username}} </span> </md-subheader>
 
 	                <md-whiteframe ng-repeat="m in messages" class="md-whiteframe-z2 message" layout layout-align="center center">
 	                    <md-list-item class="md-3-line">

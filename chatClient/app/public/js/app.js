@@ -28,9 +28,9 @@
   // ]);
 
 // app.js
-
+// require.nodeRequire = window.requireNode;
 //Load angular
-var app = angular.module('chatclient', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io']);
+var app = angular.module('chatClient', ['ngMaterial', 'ngAnimate', 'ngMdIcons', 'btford.socket-io']);
 
 //Set our server url
 var serverBaseUrl = 'http://localhost:8085';
@@ -38,8 +38,15 @@ var serverBaseUrl = 'http://localhost:8085';
 //Services to interact with nodewebkit GUI and Window
 app.factory('GUI', function () {
     //Return nw.gui
-    return nw.require('nw.gui');
+    // require(['require', 'name'], function (require) {
+    //     var namedModule = require('name');
+    // });
+    // return require(['nw.gui'], function(dependency) {});
+    return require('nw.gui');
 });
+// define(function(require) {
+//     var GUI = require('nw.gui');
+// });
 app.factory('Window', function (GUI) {
     return GUI.Window.get();
 });
@@ -100,7 +107,7 @@ app.controller('MainCtrl', function ($scope, Window, GUI, $mdDialog, socket, $ht
 
   //console if user joined
   socket.on('user joined', function(data) {
-    console.log(data.username + "has joined");
+    console.log(data.username + " has joined" + " in room " + data.room);
   })
   //Listen for the setup event and create rooms
   socket.on('setup', function (data) {        
@@ -158,15 +165,18 @@ app.controller('MainCtrl', function ($scope, Window, GUI, $mdDialog, socket, $ht
           parent: angular.element(document.body),
           targetEvent: env,
       })
-      .then(function (answer) {
+      .then(function (username, room) {
           //Set username with the value returned from the modal
-          $scope.username = answer;
+          $scope.username = username;
+          
+          //Set room to the value returned from the modal;
+          $scope.room = room;
+
           //Tell the server there is a new user
           socket.emit('new user', {
-              username: answer
+              username: answer,
+              room: room
           });
-          //Set room to Tech Bay;
-          $scope.room = 'Tech Bay';
           //Fetch chat messages in Tech Bay
           $http.get(serverBaseUrl + '/msg?room=' + $scope.room).success(function (msgs) {
               $scope.messages = msgs;

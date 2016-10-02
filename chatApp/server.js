@@ -90,7 +90,6 @@ app.get('/msg', function(req, res) {
 /**		Socket Conenction	**/
 //Listen for connection
 io.on('connection', function(socket) {
-	var defaultRoom = 'Tech Bay';
 	var rooms = ["Tech Bay", "Fashion Bay", "HR Bay"];
 
 	//emit rooms array
@@ -100,13 +99,12 @@ io.on('connection', function(socket) {
 
 	//listen for the new user
 	socker.on('new user', function(data) {
-		data.room = defaultRoom;
-
-		//new user joins the default room
-		socket.join(defaultRoom);
+		var selected_room = data.room;
+		//new user joins the selected room
+		socket.join(selected_room);
 
 		//tell all those in the room that a new user has joined...
-		io.in(defaultRoom).emit('user joined', data);
+		io.in(selected_room).emit('user joined', data);
 	});
 
 	//listen for switch room
